@@ -4,6 +4,8 @@ import { Heading } from "@/components/Heading"
 import { Check } from "lucide-react"
 import { ShinyButton } from "@/components/ShinyButton"
 import { MockDiscordUi } from "@/components/MockDiscordUi"
+import { AnimatedList, AnimatedListItem } from "@/components/ui/animated-list"
+import { DiscordMessage } from "@/components/DiscordMessage"
 
 interface Props {}
 
@@ -59,7 +61,50 @@ const page = () => {
         <div className="relative mx-auto">
           <MaxWidthWrapper className="relative">
             <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:rounded-2xl lg:p-4">
-            <MockDiscordUi></MockDiscordUi></div>
+              <MockDiscordUi>
+                <AnimatedList>
+                  <DiscordMessage
+                    avatarSrc="/brand-asset-profile-picture.png"
+                    avatarAlt="PingPanda avatar"
+                    username="PingPanda"
+                    timestamp="Today at 12:30 AM"
+                    badgeText="SignUp"
+                    badgeColor="#43b581"
+                    title="👤 New user signed up"
+                    content={{
+                       name: "some name", email: "somename@gmail.com"
+                       }}
+                  />
+                  <DiscordMessage
+                    avatarSrc="/brand-asset-profile-picture.png"
+                    avatarAlt="PingPanda avatar"
+                    username="PingPanda"
+                    timestamp="Today at 12:30 AM"
+                    badgeText="Revenue"
+                    badgeColor="#faa61a"
+                    title="💸 Payment recieved"
+                    content={{
+                       amount:"$49.90",
+                       email:"someemail@gmail.com",
+                       plan:"PRO"
+                       }}
+                  />
+                  <DiscordMessage
+                    avatarSrc="/brand-asset-profile-picture.png"
+                    avatarAlt="PingPanda avatar"
+                    username="PingPanda"
+                    timestamp="Today at 5:34 PM"
+                    badgeText="Milestone"
+                    badgeColor="#5865f2"
+                    title="🚀 Revenue Milestone achieved"
+                    content={{
+                       recurringRevenue :"$5,000",
+                       growth:"+8.2%",
+                       }}
+                  />
+                </AnimatedList>
+              </MockDiscordUi>
+            </div>
           </MaxWidthWrapper>
         </div>
       </section>
