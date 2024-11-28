@@ -11,7 +11,7 @@ interface Props {
   }
 }
 
-const page = async ({ params }: Props) => {
+const Page = async ({ params }: Props) => {
   if (typeof params.name !== "string") return notFound()
 
   const auth = await currentUser()
@@ -49,4 +49,4 @@ const page = async ({ params }: Props) => {
   )
 }
 
-export default page
+export default Page

@@ -1,5 +1,5 @@
 "use client"
-import { EventCategory } from "@prisma/client"
+import { EventCategory, Event } from "@prisma/client"
 import { useQuery } from "@tanstack/react-query"
 import React, { useMemo, useState } from "react"
 import { EmptyCategoryState } from "./EmptyCategoryState"
@@ -57,9 +57,6 @@ export const CategoryPageContent = ({
     queryKey: ["category", category.name, "hasEvents"],
     initialData: { hasEvents: initialHasEvents },
   })
-  if (!pollingData.hasEvents) {
-    return <EmptyCategoryState categoryName={category.name} />
-  }
 
   const { data, isFetching } = useQuery({
     queryKey: [
@@ -239,7 +236,9 @@ export const CategoryPageContent = ({
       )
     })
   }
-
+  if (!pollingData.hasEvents) {
+    return <EmptyCategoryState categoryName={category.name} />
+  }
   return (
     <div className="space-y-6">
       <Tabs
@@ -285,7 +284,7 @@ export const CategoryPageContent = ({
         </div>
         <Card contentClassName="px-6 py-4">
           <Table>
-          <TableHeader>
+            <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
@@ -313,15 +312,20 @@ export const CategoryPageContent = ({
                   </TableRow>
                 ))
               ) : table.getRowModel().rows.length ? (
-                table.getRowModel().rows.length ? table.getRowModel().rows.map((row)=>(
+                table.getRowModel().rows.length ? (
+                  table.getRowModel().rows.map((row) => (
                     <TableRow key={row.id}>
-                        {row.getVisibleCells().map((cell)=>(
-                            <TableCell key={cell.id}>
-                                {flexRender(cell.column.columnDef.cell,cell.getContext())}
-                            </TableCell>
-                        ))}
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
                     </TableRow>
-                ))  : null
+                  ))
+                ) : null
               ) : (
                 <TableRow>
                   <TableCell

@@ -3,7 +3,7 @@ import { db } from "@/db"
 import { currentUser } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import React from "react"
-import { UpgradePageContent } from "./UpgradePageContent"
+import { ApiKeySettings } from "./ApiKeySettings"
 
 const Page = async () => {
   const auth = await currentUser()
@@ -20,8 +20,8 @@ const Page = async () => {
   }
 
   return (
-    <DashboardPage title="Pro Membership">
-      <UpgradePageContent plan={user.plan} />
+    <DashboardPage title="API Key">
+      <ApiKeySettings apiKey={user.apiKey ?? ""} />
     </DashboardPage>
   )
 }

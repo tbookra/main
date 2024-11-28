@@ -9,7 +9,7 @@ import { client } from "@/lib/client"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 
-const page = () => {
+const Page = () => {
   const router = useRouter()
   const { data } = useQuery({
     queryFn: async () => {
@@ -139,4 +139,4 @@ const BackgroundPattern = (props: LucideProps) => {
     </svg>
   )
 }
-export default page
+export default Page

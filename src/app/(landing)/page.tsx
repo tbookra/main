@@ -13,7 +13,7 @@ import { Icons } from "@/components/icons"
 
 interface Props {}
 
-const page = () => {
+const Page = () => {
   const codeSnippet = `await fetch("http://localhost:3000/api/v1/events", {
     method: "POST",
     body: JSON.stringify({
@@ -349,4 +349,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
