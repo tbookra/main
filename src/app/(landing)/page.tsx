@@ -214,7 +214,7 @@ const Page = () => {
             </div>
             {/* forth bento grid element*/}
             <div className="relative lg:row-span-2">
-              <div className="absolute inset-px rounded-lg bg-white max-lg:rounded-b-[2rem]" />
+              <div className="absolute inset-px rounded-lg bg-white max-lg:rounded-b-[2rem] rounded-r-[2rem]" />
               <div className="relative flex h-full flex-col overflow-hidden rounded-[clac(theme(borderRadius.lg+1px))] max-lg:rounded-b-[calc(2rem+1px)] lg:rounded-r-[calc(2rem+1px)]">
                 <div className="px-8 pb-3 pt-8 sm:px-10 sm:pb-0 sm:pt-10">
                   <p className="mt-2 text-lg/7 font-medium tracking-tight text-brand-950 max-lg:text-center">
