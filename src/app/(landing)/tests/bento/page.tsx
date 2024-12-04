@@ -41,7 +41,7 @@ const Page = () => {
                   </div>
                 </div>
               </div>
-              <div className="pointer-events-none absolute inset-px rounded-lg shadow ring-1 ring-black/5 max-lg:rounded-b-[2rem] lg:rounded-l-[2rem]" />
+              <div className="pointer-events-none absolute inset-px rounded-lg shadow ring-1 ring-black/5 max-lg:rounded-t-[2rem] lg:rounded-l-[2rem]" />
             </div>
             {/* second bento grid element */}
             <div className="relative max-lg:row-start-2">

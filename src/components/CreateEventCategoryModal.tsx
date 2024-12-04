@@ -1,7 +1,7 @@
 "use client"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React, { PropsWithChildren, useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, FormProvider } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import {
@@ -15,6 +15,7 @@ import { Input } from "./ui/input"
 import { cn } from "@/lib/utils"
 import { Button } from "./ui/button"
 import { client } from "@/lib/client"
+import CustomInput from "./CustomInput"
 
 const EVENT_CATEGORY_VALIDATOR = z.object({
   name: CATEGORY_NAME_VALIDATOR,
@@ -53,19 +54,21 @@ const EMOJI_OPTIONS = [
 interface CreateEventCategoryModel extends PropsWithChildren {
   containerClassName?: string
 }
-export const CreateEventCategoryModal = ({ children,containerClassName }: CreateEventCategoryModel) => {
+export const CreateEventCategoryModal = ({
+  children,
+  containerClassName,
+}: CreateEventCategoryModel) => {
   const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
+  const methods = useForm<EventCategoryForm>({
+    resolver: zodResolver(EVENT_CATEGORY_VALIDATOR),
+  })
   const {
-    register,
     handleSubmit,
     watch,
     setValue,
     formState: { errors },
-  } = useForm<EventCategoryForm>({
-    resolver: zodResolver(EVENT_CATEGORY_VALIDATOR),
-  })
-
+  } = methods
   const { mutate: createEventCategoryFn, isPending } = useMutation({
     mutationFn: async (data: EventCategoryForm) => {
       await client.category.createEventCategory.$post(data)
@@ -82,101 +85,101 @@ export const CreateEventCategoryModal = ({ children,containerClassName }: Create
 
   return (
     <>
-      <div className={containerClassName} onClick={() => setIsOpen(true)}>{children}</div>
+      <div className={containerClassName} onClick={() => setIsOpen(true)}>
+        {children}
+      </div>
 
       <Modal
         showModal={isOpen}
         setShowModal={setIsOpen}
         className="max-w-xl p-8"
       >
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div>
-            <h2 className="text-lg/7 font-medium tracking-tight text-gray-950">
-              New Event Category
-            </h2>
-            <p className="text-sm/6 text-gray-600">
-              Create a new category to organize your events.
-            </p>
-          </div>
-          <div className="space-y-5">
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
-              <Label htmlFor="name"></Label>
-              <Input
-                autoFocus
-                id="name"
-                {...register("name")}
-                placeholder="e.g user-signup"
-                className="w-full"
-              />
-              {errors.name ? (
-                <p className="mt-1 text-sm text-red-500 ">
-                  {errors.name.message}
-                </p>
-              ) : null}
+              <h2 className="text-lg/7 font-medium tracking-tight text-gray-950">
+                New Event Category
+              </h2>
+              <p className="text-sm/6 text-gray-600">
+                Create a new category to organize your events.
+              </p>
             </div>
-            <div>
-              <Label>Color</Label>
-              <div className="flex flex-wrap gap-3">
-                {COLOR_OPTIONS.map((premadeColor) => (
-                  <button
-                    key={premadeColor}
-                    type="button"
-                    className={cn(
-                      `bg-[${premadeColor}]`,
-                      "size-10 rounded-full ring-2 ring-offset-2 transition-all",
-                      watch("color") === premadeColor
-                        ? "ring-brand-700 scale-110"
-                        : "ring-transparent hover:scale-105"
-                    )}
-                    onClick={() => setValue("color", premadeColor)}
-                  ></button>
-                ))}
+            <div className="space-y-5">
+              <div>
+                
+
+                <div>
+                  <CustomInput
+                    name="name"
+                    label="Name"
+                    placeholder="e.g user-signup"
+                    required
+                  />
+                </div>
+             
+                <Label>Color</Label>
+                <div className="flex flex-wrap gap-3">
+                  {COLOR_OPTIONS.map((premadeColor) => (
+                    <button
+                      key={premadeColor}
+                      type="button"
+                      className={cn(
+                        `bg-[${premadeColor}]`,
+                        "size-10 rounded-full ring-2 ring-offset-2 transition-all",
+                        watch("color") === premadeColor
+                          ? "ring-brand-700 scale-110"
+                          : "ring-transparent hover:scale-105"
+                      )}
+                      onClick={() => setValue("color", premadeColor)}
+                    ></button>
+                  ))}
+                </div>
+                {errors.color ? (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.color.message}
+                  </p>
+                ) : null}
               </div>
-              {errors.color ? (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.color.message}
-                </p>
-              ) : null}
-            </div>
-            <div>
-              <Label>Emoji</Label>
-              <div className="flex flex-wrap gap-3">
-                {EMOJI_OPTIONS.map(({ emoji, label }) => (
-                  <button
-                    key={emoji}
-                    type="button"
-                    className={cn(
-                      "size-10 flex items-center justify-center text-xl rounded-md transition-all",
-                      watch("emoji") === emoji
-                        ? "bg-brand-100 ring-2 ring-brand-700 scale-110"
-                        : "bg-brand-100 hover:bg-brand-200"
-                    )}
-                    onClick={() => setValue("emoji", emoji)}
-                  >
-                    {emoji}
-                  </button>
-                ))}
+              <div>
+                <Label>Emoji</Label>
+                <div className="flex flex-wrap gap-3">
+                  {EMOJI_OPTIONS.map(({ emoji, label }) => (
+                    <button
+                      key={emoji}
+                      type="button"
+                      className={cn(
+                        "size-10 flex items-center justify-center text-xl rounded-md transition-all",
+                        watch("emoji") === emoji
+                          ? "bg-brand-100 ring-2 ring-brand-700 scale-110"
+                          : "bg-brand-100 hover:bg-brand-200"
+                      )}
+                      onClick={() => setValue("emoji", emoji)}
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+                {errors.emoji ? (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.emoji.message}
+                  </p>
+                ) : null}
               </div>
-              {errors.emoji ? (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.emoji.message}
-                </p>
-              ) : null}
             </div>
-          </div>
-          <div className="flex justify-end space-x-3 pt-4 border-t">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setIsOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isPending}>
-              {isPending ? "Creating..." : "Create Category"}
-            </Button>
-          </div>
-        </form>
+            <div className="flex justify-end space-x-3 pt-4 border-t">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isPending}>
+                {isPending ? "Creating..." : "Create Category"}
+              </Button>
+            </div>
+          </form>
+        </FormProvider>
       </Modal>
     </>
   )
