@@ -1,15 +1,13 @@
 import { CreateEventCategoryModal } from "@/components/CreateEventCategoryModal"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/Card"
+import { Card } from "@/components/Card"
 import { client } from "@/lib/client"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-
-
 
 const DashboardEmptyState = () => {
   const queryClient = useQueryClient()
 
-  const { mutate: insertQuickStartCategories,isPending } = useMutation({
+  const { mutate: insertQuickStartCategories, isPending } = useMutation({
     mutationFn: async () => {
       await client.category.insertQuickStartCategories.$post()
     },
@@ -37,14 +35,14 @@ const DashboardEmptyState = () => {
         <Button
           variant="outline"
           className="flex items-center space-x-2 w-full sm:w-auto"
-          onClick={()=>insertQuickStartCategories()}
+          onClick={() => insertQuickStartCategories()}
           disabled={isPending}
         >
-            <span className="size-5">🚀</span>
-            <span>{isPending ? "Creating..." : "Quickstart"}</span>
+          <span className="size-5">🚀</span>
+          <span>{isPending ? "Creating..." : "Quickstart"}</span>
         </Button>
-        <CreateEventCategoryModal containerClassName="w-full sm:w-auto" >
-        <Button className="flex items-center space-x-2 w-full sm:w-auto">
+        <CreateEventCategoryModal containerClassName="w-full sm:w-auto">
+          <Button className="flex items-center space-x-2 w-full sm:w-auto">
             <span>Add Category</span>
           </Button>
         </CreateEventCategoryModal>

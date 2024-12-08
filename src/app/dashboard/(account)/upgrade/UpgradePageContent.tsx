@@ -1,5 +1,5 @@
 "use client"
-import { Card } from "@/components/ui/Card"
+import { Card } from "@/components/Card"
 import { client } from "@/lib/client"
 import { Plan } from "@prisma/client"
 import { useMutation, useQuery } from "@tanstack/react-query"
