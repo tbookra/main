@@ -21,11 +21,7 @@ const Page = () => {
       fetchNextPage()
     }
   }, [fetchNextPage, inView])
-
-  let accumulateData: Product[] = []
-  data?.pages.forEach((page) => {
-    accumulateData = [...accumulateData, ...(page?.data || [])]
-  })
+  
 
   return status === "pending" ? (
     <div>Loading...</div>
@@ -35,7 +31,7 @@ const Page = () => {
     <div className="container mx-auto p-4 min-h-screen max-w-5xl">
       <h1 className="text-3xl font-bold mb-4 text-center">Infinite Scroll</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        <Products products={accumulateData as Product[]} />
+        <Products products={data?.pages.map((page)=>page?.data.map((item)=>item)).flatMap((item)=>item) as Product[]} />
       </div>
       <div ref={ref}>{isFetching && "Loading..."}</div>
     </div>
