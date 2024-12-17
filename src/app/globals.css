@@ -27,7 +27,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem
+    --radius: 0.5rem;
   }
   .dark {
     --background: 224 71.4% 4.1%;
@@ -53,7 +53,7 @@
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%
+    --chart-5: 340 75% 55%;
   }
 }
 @layer base {
@@ -62,5 +62,61 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+@layer components {
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  .custom-checkbox + label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .custom-checkbox {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+  }
+
+  .custom-checkbox + label::before {
+    content: "";
+    width: 1.1em;
+    height: 1.1em;
+    margin-right: 0.5em;
+    border-radius: 0.15em;
+    border: 0.05em solid black;
+    color: initial; /* Reset color */
+    font-family: initial; /* Ensure default font */
+    font-size: initial; /* Reset font size */
+  }
+
+  .custom-checkbox + label:hover::before {
+    background-color: #0af;
+  }
+
+  .custom-checkbox:focus-visible + label::before {
+    box-shadow: 0 0 20px 0 black;
+  }
+
+  .custom-checkbox:checked + label::before {
+    content: "\2714"; /*  ✔ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #069;
+    color: white;
+  }
+
+  .custom-checkbox:disabled + label {
+    color: #aaa;
+    cursor: not-allowed;
+  }
+
+  .custom-checkbox:disabled + label::before {
+    background-color: #ccc;
+    border-color: #999;
   }
 }

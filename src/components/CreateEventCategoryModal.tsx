@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "./ui/button"
 import { client } from "@/lib/client"
 import CustomInput from "./CustomInput"
+import CustomCheckbox from "./CustomCheckbox"
 
 const EVENT_CATEGORY_VALIDATOR = z.object({
   name: CATEGORY_NAME_VALIDATOR,
@@ -59,6 +60,8 @@ export const CreateEventCategoryModal = ({
   containerClassName,
 }: CreateEventCategoryModel) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [confirmed, setConfirmed] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
   const queryClient = useQueryClient()
   const methods = useForm<EventCategoryForm>({
     resolver: zodResolver(EVENT_CATEGORY_VALIDATOR),
@@ -80,7 +83,13 @@ export const CreateEventCategoryModal = ({
   })
 
   const onSubmit = (data: EventCategoryForm) => {
-    createEventCategoryFn(data)
+    if (confirmed) {
+      createEventCategoryFn(data)
+      setConfirmed(false)
+      setErrorMessage("")
+    } else {
+      setErrorMessage("You need to confirm")
+    }
   }
 
   return (
@@ -106,8 +115,6 @@ export const CreateEventCategoryModal = ({
             </div>
             <div className="space-y-5">
               <div>
-                
-
                 <div>
                   <CustomInput
                     name="name"
@@ -116,7 +123,7 @@ export const CreateEventCategoryModal = ({
                     required
                   />
                 </div>
-             
+
                 <Label>Color</Label>
                 <div className="flex flex-wrap gap-3">
                   {COLOR_OPTIONS.map((premadeColor) => (
@@ -165,6 +172,14 @@ export const CreateEventCategoryModal = ({
                   </p>
                 ) : null}
               </div>
+              <CustomCheckbox
+                setChecked={setConfirmed}
+                checked={confirmed}
+                name="Confirm"
+              />
+              {errorMessage && (
+                <p className="text-red-500 text-sm">{errorMessage}</p>
+              )}
             </div>
             <div className="flex justify-end space-x-3 pt-4 border-t">
               <Button
